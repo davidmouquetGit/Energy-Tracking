@@ -1,28 +1,29 @@
+from app.config import API_TOKEN, PRM
+import requests
+import cloudscraper
 
 
 
 
-def get_consumption_load(prm: str, start: str, end: str, token: str):
+def get_consumption_load(start: str, end: str):
     """
-    Récupère les données de consommation journalière pour un compteur (PRM)
+    Récupère les données de consommation au pas de temps demie-heure pour un compteur (PRM)
     entre les dates start (incluse) et end (exclue).
     
-    :param prm: le PRM (14 chiffres)
     :param start: date de début au format 'YYYY-MM-DD'
     :param end: date de fin (non incluse) au format 'YYYY-MM-DD'
-    :param token: le token d’authentification Bearer
     :return: réponse JSON si succès, sinon lève une exception
     """
 
-    import requests
-    
+    scraper = cloudscraper.create_scraper()
+
     base_url = "https://conso.boris.sh/api/consumption_load_curve"
     headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"Bearer {API_TOKEN}",
         "User-Agent": "MonApp/1.0 (contact@example.com)"  # optionnel mais recommandé
     }
     params = {
-        "prm": prm,
+        "prm": PRM,
         "start": start,
         "end": end
     }
