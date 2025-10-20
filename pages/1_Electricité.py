@@ -27,7 +27,7 @@ def get_conso_horaire_data():
     DB_URL = os.getenv("DB_URL")
     engine = create_engine(DB_URL)
     # Lire un DataFrame
-    df = pd.read_sql("SELECT timestamp, value FROM courbecharge", engine)
+    df = pd.read_sql("SELECT timestamp, value FROM conso_heure_elec", engine)
     df.index = df['timestamp']
 
     return df
@@ -40,7 +40,7 @@ def get_conso_jour_data():
     DB_URL = os.getenv("DB_URL")
     engine = create_engine(DB_URL)
     # Lire un DataFrame
-    df = pd.read_sql("SELECT timestamp, conso_kwh FROM consojour", engine)
+    df = pd.read_sql("SELECT timestamp, value FROM conso_jour_elec", engine)
     df.index = df['timestamp']
 
     return df
