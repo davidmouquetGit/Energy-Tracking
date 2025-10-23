@@ -15,22 +15,8 @@ st.write("Visualisation de la consommation de gaz naturel")
 tabd, tabm = st.tabs(["Consommation Jour", "Consommation Mois"])
 
 
-
-
-
-@st.cache_data
-def get_conso_jour_data():
-   
-    DB_URL = os.getenv("DB_URL")
-    engine = create_engine(DB_URL)
-    # Lire un DataFrame
-    df = pd.read_sql("SELECT horodatage, energie FROM conso_jour_gaz", engine)
-    df.index = df['horodatage']
-
-    return df
-
-data_jour = get_conso_jour_data()
-data_mois = data_jour['energie'].resample("1M").sum()
+data_gaz_jour = st.session_state["data_gaz_jour"]
+data_gaz_mois = st.session_state["data_gaz_mois"]
 
 
 with tabd:
@@ -42,9 +28,9 @@ with tabd:
 
         
 
-        #data_jour = get_conso_jour_data()
-        fig = px.line(data_jour, 
-                    x=data_jour.index, 
+        #data_gaz_jour = get_conso_jour_data()
+        fig = px.line(data_gaz_jour, 
+                    x=data_gaz_jour.index, 
                     y="energie")    
         fig.update_traces(line_color="#b4801f")
 
@@ -74,9 +60,9 @@ with tabm:
 
 
         # Création du graphique en barres
-        fig = px.bar(data_mois,
-                    x=data_mois.index,
-                    y=data_mois.values,
+        fig = px.bar(data_gaz_mois,
+                    x=data_gaz_mois.index,
+                    y=data_gaz_mois.values,
                     title='Consommation gaz mensuelle',
                     #labels={'Consommation': 'Consommation (kWh)', 'Date': 'Mois'},
                     color_discrete_sequence=["#b4801f"])
@@ -87,6 +73,13 @@ with tabm:
             tickangle=45,        # Incline les étiquettes pour une meilleure lisibilité
             dtick='M1'           # Affiche une étiquette par mois
         )
+
+        fig.update_layout(
+            title="Consommation gaz mensuelle",
+            xaxis_title="",
+            yaxis_title="Consommation (kWh)",
+            width=1000,  # Largeur en pixels
+            height=500)       
 
 
         st.plotly_chart(fig, use_container_width=True)
