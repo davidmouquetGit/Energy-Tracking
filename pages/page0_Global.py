@@ -135,7 +135,7 @@ fig_year.add_trace(go.Scatter(
 # --- Mise en page ---
 fig_year.update_layout(
     barmode="group",
-    title=dict(text="Consommation annuuelle et DJU", x=0.1),
+    title=dict(text="Consommation annuelle et DJU", x=0.1),
     xaxis=dict(title="Mois"),
     yaxis=dict(
         title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),

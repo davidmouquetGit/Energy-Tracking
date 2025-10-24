@@ -32,8 +32,8 @@ st.session_state["data_gaz_mois"]   = data_gaz_mois
 
 pg = st.navigation([global_page,elec_page, gaz_page,data_page, import_page])
 st.set_page_config(
-    page_title="Acueil",
-    page_icon=""
+    page_title="Accueil",
+    page_icon=":chart_with_upwards_trend:"
 )
 
 pg.run()

@@ -1,12 +1,10 @@
 import streamlit as st
-import time
-import numpy as np
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
 import pandas as pd
-import os
-import io  # Nécessaire pour la création du buffer de téléchargement
 # Charger le fichier .env
+import plotly.graph_objects as go
+from datetime import datetime, timedelta
+
 load_dotenv()
 
 
@@ -28,6 +26,8 @@ data_elec_mois  = st.session_state["data_elec_mois"]
 
 with tabh:
 
+    st.markdown("##### Consommation électrique horaire")
+
     try:
         
         import plotly.express as px
@@ -38,35 +38,12 @@ with tabh:
                     y="value")    
 
         fig.update_layout(
-            title="Consommation électrique horaire",
             xaxis_title="",
             yaxis_title="Consommation (W)",
         width=1000,  # Largeur en pixels
         height=500)
         st.plotly_chart(fig, use_container_width=True)
 
-         # Ajout des boutons de téléchargement
-        col1, col2 = st.columns(2)
-        with col1:
-            buffer_csv = io.BytesIO()
-            data_elec_heure.to_csv(buffer_csv, index=True)
-            buffer_csv.seek(0)
-            st.download_button(
-                label="💾 Télécharger en CSV",
-                data=buffer_csv,
-                file_name="conso_horaire.csv",
-                mime="text/csv"
-            )
-        with col2:
-            buffer_excel = io.BytesIO()
-            data_elec_heure.to_excel(buffer_excel, index=True)
-            buffer_excel.seek(0)
-            st.download_button(
-                label="💾 Télécharger en Excel",
-                data=buffer_excel,
-                file_name="conso_horaire.xlsx",
-                mime="application/vnd.ms-excel"
-            )
     
     except:
         st.error(
@@ -74,6 +51,78 @@ with tabh:
             **Erreur lors de la connexion à postgresql**
             Connection error
         """)
+
+    st.markdown("##### Profil horaire pour chaque jour de la semaine sur une période définie")
+
+    from datetime import date
+    # --- Définition de la plage totale ---
+    min_date = data_elec_heure.index.min().date()
+    max_date = data_elec_heure.index.max().date()
+
+    # --- Slider avec plage initiale ---
+    selected_range = st.slider(
+        "Choisissez une période (au moins 7 jours) :",
+        min_value=min_date,
+        max_value=max_date,
+        value=(min_date, max_date),
+        format="DD/MM/YYYY"
+    )
+
+    start_date, end_date = selected_range
+
+
+    # --- Vérifie la contrainte (au moins 7 jours) ---
+    if (end_date - start_date).days < 7:
+        st.error("La période doit contenir **au moins 7 jours**.")
+        st.stop()
+
+    # --- Fonction de calcul des profils horaire moyens par jour de la semaine ---
+    @st.cache_data
+    def compute_profils(start_date, end_date):
+        
+        df = data_elec_heure[(data_elec_heure.index>=pd.to_datetime(start_date)) & (data_elec_heure.index<=pd.to_datetime(end_date))]        
+        df = df['value'].resample("1h").mean().to_frame()
+        # 1. Extraire le jour de la semaine et l'heure
+        df['jour_semaine'] = df.index.day_name()  # ou df.index.dayofweek pour un entier (0=lundi, 6=dimanche)
+        df['heure'] = df.index.hour
+
+        # 2. Grouper par jour de la semaine et par heure, puis calculer la moyenne
+        moyennes = df.groupby(['jour_semaine', 'heure'])['value'].mean().reset_index()
+
+        # 3. Pivoter pour obtenir les jours en index et les heures en colonnes
+        resultat = moyennes.pivot(index='jour_semaine', columns='heure', values='value')
+        jours_ordre = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        resultat = resultat.reindex(jours_ordre)
+        # On renomme les noms des jours en français
+        resultat.index = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+
+
+        return resultat
+
+
+    df_profils_horaire_hebdo = compute_profils(start_date, end_date)
+
+
+    # Liste des labels pour les heures (0h, 1h, ..., 23h)
+    heures_labels = [f"{h}h" for h in range(24)]
+
+    heatmap = go.Figure(data=go.Heatmap(
+            z=df_profils_horaire_hebdo.values,
+            x=heures_labels,  # Utilise les labels personnalisés pour l'axe X
+            y=df_profils_horaire_hebdo.index.to_list(),
+            colorscale='Viridis',
+            colorbar=dict(
+                title="W"  # Ajoute l'unité "W" à la barre de couleur
+            )
+    ))
+
+   
+
+    st.plotly_chart(heatmap, use_container_width=True)
+
+
+
+
 
 with tabd:
     
