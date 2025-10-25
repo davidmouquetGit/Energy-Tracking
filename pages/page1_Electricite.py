@@ -1,18 +1,11 @@
 import streamlit as st
-from dotenv import load_dotenv
 import pandas as pd
-# Charger le fichier .env
 import plotly.graph_objects as go
-from datetime import datetime, timedelta
-
-load_dotenv()
-
 
 st.set_page_config(page_title="Consommation d'électricité")
 
 st.markdown("# Electricité")
 st.sidebar.header(" Electricité")
-#st.write("Visualisation de la consommation d'électricité")
 
 
 tabh, tabd, tabm = st.tabs(["Courbe de charge horaire", "Consommation Jour", "Consommation Mois"])

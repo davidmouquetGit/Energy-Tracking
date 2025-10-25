@@ -40,10 +40,11 @@ with tab_grdf:
             "Déposez votre fichier Excel ici",
             type=["xlsx", "xls"],
             accept_multiple_files=False,
-            key="file_uploader_grdf"
+            key="file_uploader_grdf",
+            disabled=True,
         )
     with col_format:
-        if st.button("Format GRDF"):
+        if st.button("Format GRDF",disabled=False):
             st.session_state.show_format_grdf = not st.session_state.show_format_grdf
         if st.session_state.show_format_grdf:
             st.image("images/format fichier GRDF.png", caption="Exemple de format attendu", width='stretch')
@@ -110,7 +111,7 @@ with tab_grdf:
             st.dataframe(st.session_state.df_grdf, width='stretch')
             col1, col2 = st.columns([1, 1])
             with col1:
-                if st.button("Importer", disabled=not st.session_state.import_button_active_grdf):
+                if st.button("Importer", disabled=False):
                     if not st.session_state.imported_grdf:
                         import_data()
                         st.session_state.imported_grdf = True
@@ -161,10 +162,11 @@ with tab_enedis:
             "Déposez votre fichier Excel ici",
             type=["xlsx", "xls"],
             accept_multiple_files=False,
-            key="file_uploader_enedis"
+            key="file_uploader_enedis",
+            disabled=True
         )
     with col_format:
-        if st.button("Format ENEDIS"):
+        if st.button("Format ENEDIS",disabled=False):
             st.session_state.show_format = not st.session_state.show_format
         if st.session_state.show_format:
             st.image("images/format fichier ENEDIS.png", caption="Exemple de format attendu", width='stretch')
@@ -232,7 +234,7 @@ with tab_enedis:
             st.dataframe(st.session_state.df_enedis, width='stretch')
             col1, col2 = st.columns([1, 1])
             with col1:
-                if st.button("Importer", disabled=not st.session_state.import_button_active):
+                if st.button("Importer", disabled=False):
                     if not st.session_state.imported:
                         import_data()
                         st.session_state.imported = True
