@@ -1,6 +1,6 @@
 import streamlit as st
 from gestionbdd.getdata import get_data
-from modelisation.predict import predict_conso
+from modelisation.predict import predict_conso_mensuelles
 from joblib import load
 
 
@@ -25,7 +25,8 @@ data_elec_mois  = data_elec_jour['value'].resample("MS").sum()
 data_gaz_mois   = data_gaz_jour['energie'].resample("MS").sum()
 
 data_occup_jour['presence'] = data_occup_jour['presence'].apply(lambda o: 1.0 if o=="oui" else 0.0)
-data_occup_mois             = 100*data_occup_jour['presence']/data_occup_jour.resample("MS").size()
+data_occup_mois             = 100*data_occup_jour['presence'].resample("MS").sum()/data_occup_jour.resample("MS").size()
+
 
 
 T_moyenne = (data_meteo_jour['temperature_2m_min'] + data_meteo_jour['temperature_2m_max']) / 2
@@ -46,8 +47,14 @@ st.session_state["data_occup_mois"] = data_occup_mois
 
 # Chargement des modèles 
 
+
 model_elec_obj = load("ml_models/model-elec-mois.joblib")
-predict_conso(model_obj=model_elec_obj,typeenergie="elec")
+model_gaz_obj = load("ml_models/model-gaz-mois.joblib")
+
+predict_conso_mensuelles(model_obj=model_elec_obj,typeenergie="elec")
+predict_conso_mensuelles(model_obj=model_gaz_obj,typeenergie="gaz")
+
+
 
 pg = st.navigation([global_page,elec_page, gaz_page,data_page, import_page])
 st.set_page_config(
