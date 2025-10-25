@@ -48,8 +48,6 @@ with tabm:
     
     try:
         
-        import pandas as pd
-        import numpy as np
         import plotly.graph_objects as go
 
         error_y = dict(
