@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-# Page à réorganiser
+# transformation des données
 
 data_elec_mois  = st.session_state["data_elec_mois"]
 data_gaz_mois   = st.session_state["data_gaz_mois"]
@@ -39,6 +39,7 @@ year_dju  = dju_year.index.strftime("%Y")
 
 
 
+<<<<<<< HEAD
 avant = 120
 apres = 90
 
@@ -48,127 +49,70 @@ st.metric(
     label="Consommation",
     value=f"{apres} kWh",
     delta=f"{variation:+.1f} %")
+=======
+# Calcul des variation de consommations annuelles à la date de consultation du rapport
+>>>>>>> b806e1d (modification page principale)
 
-# --- Création du graphique ---
-fig = go.Figure()
+data_elec_jour  = st.session_state["data_elec_jour"]
+last_date_with_data =  data_elec_jour.index[-1]
+jour_mois = last_date_with_data.strftime("%m-%d")  # "05-15"
+data_elec_jour['mois_jour'] = data_elec_jour.index.strftime("%m-%d")
+conso_filtre = data_elec_jour[data_elec_jour['mois_jour'] <= jour_mois]
 
-fig.add_trace(go.Bar(
-    x=mois_elec,
-    y=data_elec_mois,
-    name="Electricité",
-    marker_color="steelblue",
-    yaxis="y1"
-))
-
-fig.add_trace(go.Bar(
-    x=mois_gaz,
-    y=data_gaz_mois,
-    name="Gaz",
-    marker_color="darkorange",
-    yaxis="y1"
-))
-
-
-# DJU (axe secondaire)
-fig.add_trace(go.Scatter(
-    x=mois_dju,
-    y=dju_month,
-    name="DJU",
-    mode="lines+markers",
-    line=dict(color="mediumseagreen", width=2,dash="dot"),
-    marker=dict(size=6),
-    yaxis="y2"
-))
-# --- Mise en page ---
-fig.update_layout(
-    barmode="group",
-    title=dict(text="Consommation annuelle et DJU", x=0.1),
-    xaxis=dict(title="Mois"),
-    yaxis=dict(
-        title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
-        tickfont=dict(color="steelblue")
-    ),
-    yaxis2=dict(
-        title=dict(text="DJU", font=dict(color="mediumseagreen")),
-        tickfont=dict(color="mediumseagreen"),
-        overlaying="y",
-        side="right"
-    ),
-    # Ces deux paramètres doivent être ici, au niveau du layout global 👇
-    bargap=0.2,            # espace entre groupes de barres
-    bargroupgap=0.05,      # espace entre barres d’un même groupe
-    template="plotly_white",
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.0,
-        xanchor="center",
-        x=0.2
-    )
+conso_filtre = conso_filtre.assign(annee=
+    lambda x: x.index.year
 )
 
+cumul_par_annee = conso_filtre.groupby('annee')['value'].sum()
+annee_en_cours   = int(cumul_par_annee.index[-1])
+annee_precedente = int(cumul_par_annee.index[-2])
+conso_annee_courante_elec  = cumul_par_annee.loc[annee_en_cours]
+conso_annee_precedente_elec = cumul_par_annee.loc[annee_precedente]
 
 
+data_gaz_jour = st.session_state["data_gaz_jour"]
+last_date_with_data =  data_gaz_jour.index[-1]
+jour_mois = last_date_with_data.strftime("%m-%d")  # "05-15"
+data_gaz_jour['mois_jour'] = data_gaz_jour.index.strftime("%m-%d")
+conso_filtre = data_gaz_jour[data_gaz_jour['mois_jour'] <= jour_mois]
 
-# --- Création du graphique ---
-fig_year = go.Figure()
-
-fig_year.add_trace(go.Bar(
-    x=year_elec,
-    y=data_elec_year,
-    name="Electricité",
-    marker_color="steelblue",
-    yaxis="y1"
-))
-
-fig_year.add_trace(go.Bar(
-    x=year_gaz,
-    y=data_gaz_year,
-    name="Gaz",
-    marker_color="darkorange",
-    yaxis="y1"
-))
-
-# DJU (axe secondaire)
-fig_year.add_trace(go.Scatter(
-    x=year_dju,
-    y=dju_year,
-    name="DJU",
-    mode="lines+markers",
-    line=dict(color="mediumseagreen", width=2,dash="dot"),
-    marker=dict(size=10),
-    yaxis="y2"
-))
-
-
-# --- Mise en page ---
-fig_year.update_layout(
-    barmode="group",
-    title=dict(text="Consommation annuelle et DJU", x=0.1),
-    xaxis=dict(title="Mois"),
-    yaxis=dict(
-        title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
-        tickfont=dict(color="steelblue")
-    ),
-    yaxis2=dict(
-        title=dict(text="DJU", font=dict(color="mediumseagreen")),
-        tickfont=dict(color="mediumseagreen"),
-        overlaying="y",
-        side="right"
-    ),
-    # Ces deux paramètres doivent être ici, au niveau du layout global 
-    bargap=0.2,            # espace entre groupes de barres
-    bargroupgap=0.05,      # espace entre barres d’un même groupe
-    template="plotly_white",
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.0,
-        xanchor="center",
-        x=0.2
-    )
+conso_filtre = conso_filtre.assign(annee=
+    lambda x: x.index.year
 )
 
+cumul_par_annee = conso_filtre.groupby('annee')['energie'].sum()
+annee_en_cours   = int(cumul_par_annee.index[-1])
+annee_precedente = int(cumul_par_annee.index[-2])
+conso_annee_courante_gaz  = cumul_par_annee.loc[annee_en_cours]
+conso_annee_precedente_gaz = cumul_par_annee.loc[annee_precedente]
+
+
+
+tab_annuel, tab_mois = st.tabs(["Consommation annuelle", "Historique mensuel"])
+
+with tab_annuel:
+ 
+    variation_elec = (conso_annee_courante_elec - conso_annee_precedente_elec) / conso_annee_precedente_elec * 100
+    variation_gaz = (conso_annee_courante_gaz  - conso_annee_precedente_gaz ) / conso_annee_precedente_gaz  * 100
+
+    # Deux colonnes
+    col1, col2 = st.columns(2)
+
+    # Première métrique : consommation
+    col1.metric(
+        label="Consommation Élec (kWh)",
+        value=f"{int(conso_annee_courante_elec)}",
+        delta=f"{variation_elec:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data.strftime("%d %b"),
+        delta_color="inverse"  # vert si baisse, rouge si hausse
+    )
+
+    # Deuxième métrique : dépense
+    col2.metric(
+        label="Consommation Gaz (kWh)",
+        value=f"{int(conso_annee_precedente_gaz)}",
+        delta=f"{variation_gaz:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data.strftime("%d %b"),
+        delta_color="inverse"  # vert si baisse, rouge si hausse
+    )
 
 
 
@@ -177,7 +121,138 @@ fig_year.update_layout(
 
 
 
-st.plotly_chart(fig, use_container_width=True)
 
-st.plotly_chart(fig_year, use_container_width=True)
+    # --- Création du graphique ---
+    fig_year = go.Figure()
+
+    fig_year.add_trace(go.Bar(
+        x=year_elec,
+        y=data_elec_year,
+        name="Electricité",
+        marker_color="steelblue",
+        yaxis="y1"
+    ))
+
+    fig_year.add_trace(go.Bar(
+        x=year_gaz,
+        y=data_gaz_year,
+        name="Gaz",
+        marker_color="darkorange",
+        yaxis="y1"
+    ))
+
+    # DJU (axe secondaire)
+    fig_year.add_trace(go.Scatter(
+        x=year_dju,
+        y=dju_year,
+        name="DJU",
+        mode="lines+markers",
+        line=dict(color="mediumseagreen", width=2,dash="dot"),
+        marker=dict(size=10),
+        yaxis="y2"
+    ))
+
+
+    # --- Mise en page ---
+    fig_year.update_layout(
+        barmode="group",
+        title=dict(text="Consommation annuelle et DJU", x=0.1),
+        xaxis=dict(title="Mois"),
+        yaxis=dict(
+            title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
+            tickfont=dict(color="steelblue")
+        ),
+        yaxis2=dict(
+            title=dict(text="DJU", font=dict(color="mediumseagreen")),
+            tickfont=dict(color="mediumseagreen"),
+            overlaying="y",
+            side="right"
+        ),
+        # Ces deux paramètres doivent être ici, au niveau du layout global 
+        bargap=0.2,            # espace entre groupes de barres
+        bargroupgap=0.05,      # espace entre barres d’un même groupe
+        template="plotly_white",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.0,
+            xanchor="center",
+            x=0.2
+        )
+    )
+
+    st.plotly_chart(fig_year, use_container_width=True)
+
+
+
+
+
+
+
+
+
+
+with tab_mois:
+
+    # --- Création du graphique ---
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=mois_elec,
+        y=data_elec_mois,
+        name="Electricité",
+        marker_color="steelblue",
+        yaxis="y1"
+    ))
+
+    fig.add_trace(go.Bar(
+        x=mois_gaz,
+        y=data_gaz_mois,
+        name="Gaz",
+        marker_color="darkorange",
+        yaxis="y1"
+    ))
+
+
+    # DJU (axe secondaire)
+    fig.add_trace(go.Scatter(
+        x=mois_dju,
+        y=dju_month,
+        name="DJU",
+        mode="lines+markers",
+        line=dict(color="mediumseagreen", width=2,dash="dot"),
+        marker=dict(size=6),
+        yaxis="y2"
+    ))
+    # --- Mise en page ---
+    fig.update_layout(
+        barmode="group",
+        title=dict(text="Consommation annuelle et DJU", x=0.1),
+        xaxis=dict(title="Mois"),
+        yaxis=dict(
+            title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
+            tickfont=dict(color="steelblue")
+        ),
+        yaxis2=dict(
+            title=dict(text="DJU", font=dict(color="mediumseagreen")),
+            tickfont=dict(color="mediumseagreen"),
+            overlaying="y",
+            side="right"
+        ),
+        # Ces deux paramètres doivent être ici, au niveau du layout global 👇
+        bargap=0.2,            # espace entre groupes de barres
+        bargroupgap=0.05,      # espace entre barres d’un même groupe
+        template="plotly_white",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.0,
+            xanchor="center",
+            x=0.2
+        )
+    )
+
+
+    st.plotly_chart(fig, use_container_width=True)
+
   
