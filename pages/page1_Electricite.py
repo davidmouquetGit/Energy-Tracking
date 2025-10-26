@@ -212,4 +212,31 @@ with tabm:
         st.error(f"Erreur lors du graphe {e}")
 
 
+    # Comparaison des consommations des mois identiques
+    data_elec_mois  = st.session_state["data_elec_mois"]
+    data_elec_mois = data_elec_mois[data_elec_mois.index>="2022-01-01"]
+    data_elec_mois = data_elec_mois.to_frame()
+    data_elec_mois['année'] = data_elec_mois.index.year
+    data_elec_mois['mois']  = data_elec_mois.index.month
+    df_pivot = data_elec_mois.pivot(index='mois', columns='année', values='value')
 
+    figcm = go.Figure()
+
+    for année in df_pivot.columns:
+        figcm.add_trace(go.Bar(
+            x=df_pivot.index,
+            y=df_pivot[année],
+            name=str(année)
+        ))
+
+    # Mise en forme
+    figcm.update_layout(
+        barmode='group',  # barres côte à côte pour chaque mois
+        title="Consommation mensuelle par année",
+        xaxis_title="Mois",
+        yaxis_title="Consommation",
+        xaxis=dict(tickmode='array', tickvals=list(range(1,13)),
+                ticktext=["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"])
+    )
+
+    st.plotly_chart(figcm, use_container_width=True)
