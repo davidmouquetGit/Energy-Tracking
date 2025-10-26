@@ -22,7 +22,7 @@ def get_data(source = "elec_hour"):
         data frame horodaté
     """
 
-    if source not in ["elec_hour", "elec_jour","gaz_jour","meteo_jour"]:
+    if source not in ["elec_hour", "elec_jour","gaz_jour","meteo_jour","occup_jour"]:
         print("source de données inconnue")
 
     match source:
@@ -39,6 +39,8 @@ def get_data(source = "elec_hour"):
         case "meteo_jour":
             sql_request =  "SELECT horodatage, temperature_2m_min, temperature_2m_max FROM meteo_jour"
 
+        case "occup_jour":
+            sql_request =  "SELECT horodatage, presence FROM occupation_jour"
     
    
     DB_URL = os.getenv("DB_URL")
