@@ -211,6 +211,11 @@ with tabm:
     except Exception as e:
         st.error(f"Erreur lors du graphe {e}")
 
+    info_modele = """*Le modèle est une régression linéaire appris sur la période 2023-2024. Les facteurs d'entrée sont les DJU et le taux d'occupation mensuel du logement. L'incertitude affichée correspond à l'intervalle de confiance à 95%*
+                """
+    st.caption(info_modele)
+
+
 
     # Comparaison des consommations des mois identiques
     data_elec_mois  = st.session_state["data_elec_mois"]

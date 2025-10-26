@@ -84,18 +84,36 @@ with tab_annuel:
     # Deux colonnes
     col1, col2 = st.columns(2)
 
+    st.markdown("""
+        <style>
+        /* Couleur et taille du label metric */
+        [data-testid="stMetricLabel"] {
+            font-size: 40px !important;
+            color: #575656;
+            font-weight: 600;
+        }
+        /* Couleur du texte de la valeur principale */
+        [data-testid="stMetricValue"] {
+            font-size: 26px !important;
+            color:#575656;
+        }
+        </style>""", unsafe_allow_html=True)
+
+
     # Première métrique : consommation
     col1.metric(
-        label="Consommation Élec (kWh)",
-        value=f"{int(conso_annee_courante_elec)}",
+        label="Electricité",
+        value=f"{int(conso_annee_courante_elec)} kWh",
         delta=f"{variation_elec:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data.strftime("%d %b"),
         delta_color="inverse"  # vert si baisse, rouge si hausse
     )
 
+
+
     # Deuxième métrique : dépense
     col2.metric(
-        label="Consommation Gaz (kWh)",
-        value=f"{int(conso_annee_precedente_gaz)}",
+        label="Gaz",
+        value=f"{int(conso_annee_courante_gaz)} kWh",
         delta=f"{variation_gaz:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data.strftime("%d %b"),
         delta_color="inverse"  # vert si baisse, rouge si hausse
     )
@@ -142,7 +160,7 @@ with tab_annuel:
     # --- Mise en page ---
     fig_year.update_layout(
         barmode="group",
-        title=dict(text="Consommation annuelle et DJU", x=0.1),
+        title=dict(text="Consommation annuelle et DJU(*)", x=0.1),
         xaxis=dict(title="Mois"),
         yaxis=dict(
             title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
@@ -171,8 +189,12 @@ with tab_annuel:
 
 
 
-
-
+    info_dju = """*Les DJU, ou Degrés-Jours Unifiés, sont un indicateur climatique qui permet d'estimer les besoins de chauffage ou de climatisation 
+                  d'un bâtiment sur une période donnée (jour, mois, année…).
+                  Ils traduisent l'écart entre la température extérieure moyenne et une température de confort (généralement 18°C pour le chauffage).
+                  Le DJU de chauffage mesure combien il a 'fait froid' sur une période.*
+                """
+    st.caption(info_dju)
 
 
 
@@ -213,7 +235,7 @@ with tab_mois:
     # --- Mise en page ---
     fig.update_layout(
         barmode="group",
-        title=dict(text="Consommation annuelle et DJU", x=0.1),
+        title=dict(text="Consommation mensuelle et DJU", x=0.1),
         xaxis=dict(title="Mois"),
         yaxis=dict(
             title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
@@ -225,7 +247,7 @@ with tab_mois:
             overlaying="y",
             side="right"
         ),
-        # Ces deux paramètres doivent être ici, au niveau du layout global 👇
+        # Ces deux paramètres doivent être ici, au niveau du layout global
         bargap=0.2,            # espace entre groupes de barres
         bargroupgap=0.05,      # espace entre barres d’un même groupe
         template="plotly_white",
