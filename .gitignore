@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+modelisation/modeliser conso.ipynb
+modelisation/modeles consommations.ipynb
 # Distribution / packaging
 .Python
 build/
