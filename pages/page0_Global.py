@@ -39,6 +39,15 @@ year_dju  = dju_year.index.strftime("%Y")
 
 
 
+avant = 120
+apres = 90
+
+variation = (apres - avant) / avant * 100
+
+st.metric(
+    label="Consommation",
+    value=f"{apres} kWh",
+    delta=f"{variation:+.1f} %")
 
 # --- Création du graphique ---
 fig = go.Figure()
