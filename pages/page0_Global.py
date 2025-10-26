@@ -39,20 +39,6 @@ year_dju  = dju_year.index.strftime("%Y")
 
 
 
-<<<<<<< HEAD
-avant = 120
-apres = 90
-
-variation = (apres - avant) / avant * 100
-
-st.metric(
-    label="Consommation",
-    value=f"{apres} kWh",
-    delta=f"{variation:+.1f} %")
-=======
-# Calcul des variation de consommations annuelles à la date de consultation du rapport
->>>>>>> b806e1d (modification page principale)
-
 data_elec_jour  = st.session_state["data_elec_jour"]
 last_date_with_data =  data_elec_jour.index[-1]
 jour_mois = last_date_with_data.strftime("%m-%d")  # "05-15"
