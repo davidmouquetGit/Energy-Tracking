@@ -6,10 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
-modelisation/modeliser conso.ipynb
-modelisation/modeles consommations.ipynb
-export data to pkl.ipynb
-get_historical_load_curves.ipynb
+notebooks/
 
 
 # Distribution / packaging
