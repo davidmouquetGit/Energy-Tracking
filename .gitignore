@@ -8,6 +8,10 @@ __pycache__/
 
 modelisation/modeliser conso.ipynb
 modelisation/modeles consommations.ipynb
+export data to pkl.ipynb
+get_historical_load_curves.ipynb
+
+
 # Distribution / packaging
 .Python
 build/
