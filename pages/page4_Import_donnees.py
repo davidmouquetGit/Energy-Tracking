@@ -1,6 +1,24 @@
 import streamlit as st
 import pandas as pd
 
+
+
+from utils.utilitaires import display_logo
+
+
+
+# Configuration de la page
+st.set_page_config(page_title="EnergyTrack", layout="centered")
+
+
+# Afficher le logo
+display_logo()
+
+
+
+
+
+
 # -------------------------
 # Config
 # -------------------------

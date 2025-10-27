@@ -3,6 +3,23 @@ import plotly.express as px
 import pandas as pd
 
 
+
+from utils.utilitaires import display_logo
+
+
+
+# Configuration de la page
+st.set_page_config(page_title="EnergyTrack", layout="centered")
+
+
+# Afficher le logo
+display_logo()
+
+
+
+
+
+
 data_elec_heure = st.session_state["data_elec_heure"]
 data_elec_jour  = st.session_state["data_elec_jour"]
 data_elec_mois  = st.session_state["data_elec_mois"]

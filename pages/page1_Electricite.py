@@ -2,9 +2,27 @@ import streamlit as st
 from dotenv import load_dotenv
 import pandas as pd
 import plotly.graph_objects as go
+from utils.utilitaires import display_logo
 
 
 load_dotenv()
+
+
+
+
+
+# Configuration de la page
+st.set_page_config(page_title="EnergyTrack", layout="centered")
+
+
+# Afficher le logo
+display_logo()
+
+
+
+
+
+
 
 
 st.set_page_config(page_title="Consommation d'électricité")

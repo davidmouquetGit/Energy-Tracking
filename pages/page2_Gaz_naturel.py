@@ -5,7 +5,30 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 import pandas as pd
 import os
-st.set_page_config(page_title="Consommation gaz")
+
+
+
+
+from utils.utilitaires import display_logo
+
+
+
+# Configuration de la page
+st.set_page_config(page_title="EnergyTrack", layout="centered")
+
+
+# Afficher le logo
+display_logo()
+
+
+
+
+
+
+
+
+
+#st.set_page_config(page_title="Consommation gaz")
 
 st.markdown("# Gaz naturel")
 st.sidebar.header(" Gaz naturel")

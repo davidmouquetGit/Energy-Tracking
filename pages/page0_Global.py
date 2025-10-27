@@ -1,6 +1,22 @@
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+from utils.utilitaires import display_logo
+
+
+
+# Configuration de la page
+st.set_page_config(layout="centered")
+
+
+# Afficher le logo
+display_logo()
+
+
+
+
+
+
 
 # transformation des données
 
@@ -101,6 +117,24 @@ with tab_annuel:
             color:#575656;
         }
         </style>""", unsafe_allow_html=True)
+        
+        # Dans ton script Streamlit
+    st.markdown(
+        """
+        <style>
+        .reportview-container .main .block-container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .stMetric {
+            background-color: #f0f2f6;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
     # Première métrique : consommation
@@ -159,11 +193,49 @@ with tab_annuel:
         yaxis="y2"
     ))
 
+    st.markdown(
+        """
+        <style>
+        .dju-tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+        }
+        .dju-tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .dju-tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Ajout d'une marge inférieure réduite pour le paragraphe */
+        p.custom-title {
+            margin-bottom: 5px !important;  /* Réduit l'espace sous le titre */
+            font-weight: bold;
+        }
+        </style>
+        <p class="custom-title"><strong>Historique consommation annuelle et <span class="dju-tooltip">DJU<span class="tooltiptext">Les DJU (Degrés-Jours Unifiés) mesurent l'écart entre la température extérieure et 18°C. Plus les DJU sont élevés, plus il a fait froid.</span></span>(*)</strong></p>
+        """,
+        unsafe_allow_html=True
+    )
+
 
     # --- Mise en page ---
     fig_year.update_layout(
         barmode="group",
-        title=dict(text="Consommation annuelle et DJU(*)", x=0.1),
         xaxis=dict(title="Mois"),
         yaxis=dict(
             title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
@@ -189,17 +261,6 @@ with tab_annuel:
     )
 
     st.plotly_chart(fig_year, use_container_width=True)
-
-
-
-    info_dju = """*Les DJU, ou Degrés-Jours Unifiés, sont un indicateur climatique qui permet d'estimer les besoins de chauffage ou de climatisation 
-                  d'un bâtiment sur une période donnée (jour, mois, année…).
-                  Ils traduisent l'écart entre la température extérieure moyenne et une température de confort (généralement 18°C pour le chauffage).
-                  Le DJU de chauffage mesure combien il a 'fait froid' sur une période.*
-                """
-    st.caption(info_dju)
-
-
 
 
 

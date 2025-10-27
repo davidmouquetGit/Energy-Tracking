@@ -4,13 +4,36 @@ from modelisation.predict import predict_conso_mensuelles
 from joblib import load
 
 
+# CSS personnalisé pour la sidebar
+st.markdown(
+    """
+    <style>
+    section[data-testid="stSidebar"] {
+        background-color: #f0f8ff;
+        border-right: 1px solid #d1e7f5;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-global_page = st.Page("pages/page0_Global.py", title="Global")
-elec_page = st.Page("pages/page1_Electricite.py", title="Electricité")
-gaz_page  = st.Page("pages/page2_Gaz_naturel.py", title="Gaz naturel")
-data_page  = st.Page("pages/page3_Description_donnees.py", title="Description données")
-import_page  = st.Page("pages/page4_Import_donnees.py", title="Import données")
+# Définition des pages
+global_page = st.Page("pages/page0_Global.py", title="Global", icon="🌍")
+elec_page = st.Page("pages/page1_Electricite.py", title="Électricité", icon="⚡")
+gaz_page = st.Page("pages/page2_Gaz_naturel.py", title="Gaz naturel", icon="🔥")
+data_page = st.Page("pages/page3_Description_donnees.py", title="Description données", icon="📝")
+import_page = st.Page("pages/page4_Import_donnees.py", title="Import données", icon="📤")
 
+# Configuration de la navigation
+pg = st.navigation([global_page, elec_page, gaz_page, data_page, import_page])
+
+# Contenu de la sidebar
+with st.sidebar:
+
+    st.markdown("<p style='color: #666666; font-size: 12px;'>EnergyTrack © 2025</p>", unsafe_allow_html=True)
 
 # Chargement des données stockées dans PostGres
 
