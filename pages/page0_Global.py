@@ -42,10 +42,12 @@ year_dju  = dju_year.index.strftime("%Y")
 # Calcul des variation de consommations annuelles à la date de consultation du rapport
 
 data_elec_jour  = st.session_state["data_elec_jour"]
-last_date_with_data =  data_elec_jour.index[-1]
-jour_mois = last_date_with_data.strftime("%m-%d")  # "05-15"
+last_date_with_data_elec =  data_elec_jour.index[-1]
+jour_mois = last_date_with_data_elec.strftime("%m-%d")  # 
 data_elec_jour['mois_jour'] = data_elec_jour.index.strftime("%m-%d")
 conso_filtre = data_elec_jour[data_elec_jour['mois_jour'] <= jour_mois]
+
+#st.write(last_date_with_data)
 
 conso_filtre = conso_filtre.assign(annee=
     lambda x: x.index.year
@@ -59,8 +61,8 @@ conso_annee_precedente_elec = cumul_par_annee.loc[annee_precedente]
 
 
 data_gaz_jour = st.session_state["data_gaz_jour"]
-last_date_with_data =  data_gaz_jour.index[-1]
-jour_mois = last_date_with_data.strftime("%m-%d")  # "05-15"
+last_date_with_data_gaz =  data_gaz_jour.index[-1]
+jour_mois = last_date_with_data_gaz.strftime("%m-%d")  # "05-15"
 data_gaz_jour['mois_jour'] = data_gaz_jour.index.strftime("%m-%d")
 conso_filtre = data_gaz_jour[data_gaz_jour['mois_jour'] <= jour_mois]
 
@@ -106,7 +108,7 @@ with tab_annuel:
     col1.metric(
         label="Electricité",
         value=f"{int(conso_annee_courante_elec)} kWh",
-        delta=f"{variation_elec:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data.strftime("%d %b"),
+        delta=f"{variation_elec:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data_elec.strftime("%d %b"),
         delta_color="inverse"  # vert si baisse, rouge si hausse
     )
 
@@ -116,7 +118,7 @@ with tab_annuel:
     col2.metric(
         label="Gaz",
         value=f"{int(conso_annee_courante_gaz)} kWh",
-        delta=f"{variation_gaz:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data.strftime("%d %b"),
+        delta=f"{variation_gaz:+.1f} % par rapport à {annee_precedente} le " + last_date_with_data_gaz.strftime("%d %b"),
         delta_color="inverse"  # vert si baisse, rouge si hausse
     )
 
