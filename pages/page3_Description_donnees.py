@@ -130,7 +130,6 @@ data_elec_heure = st.session_state["data_elec_heure"]
 data_meteo_jour = st.session_state["data_meteo_jour"]
 
 
-# Exemple de données
 df = pd.DataFrame({
     'Donnée': ["Consommation électrique (30 min.)", "Consommation électrique journalière", "Consommation gaz journalière", "T° extérieure"],
     'Start': [data_elec_heure.index[0], data_elec_jour.index[0], data_gaz_jour.index[0], data_meteo_jour.index[0]],
@@ -140,11 +139,11 @@ df = pd.DataFrame({
 # Diagramme de Gantt avec plotly
 fig = px.timeline(df, x_start='Start', x_end='End', y='Donnée')
 fig.update_yaxes(autorange="reversed")  # Inverser l'axe Y pour un affichage classique
-fig.update_traces(marker_color='green')
+fig.update_traces(marker_color='green',width=0.2)
 fig.update_layout(
     title="Périodes couvertes par les données",
 width=1000,  # Largeur en pixels
-height=500)
+height=400)
 
 # Afficher la figure dans Streamlit
 st.plotly_chart(fig)
