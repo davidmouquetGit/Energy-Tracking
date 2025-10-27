@@ -47,7 +47,7 @@ jour_mois = last_date_with_data_elec.strftime("%m-%d")  #
 data_elec_jour['mois_jour'] = data_elec_jour.index.strftime("%m-%d")
 conso_filtre = data_elec_jour[data_elec_jour['mois_jour'] <= jour_mois]
 
-#st.write(last_date_with_data)
+st.write(last_date_with_data_elec)
 
 conso_filtre = conso_filtre.assign(annee=
     lambda x: x.index.year
