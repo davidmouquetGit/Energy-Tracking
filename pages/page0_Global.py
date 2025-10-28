@@ -157,12 +157,6 @@ with tab_annuel:
 
 
 
-
-
-
-
-
-
     # --- Création du graphique ---
     fig_year = go.Figure()
 
@@ -236,7 +230,6 @@ with tab_annuel:
     # --- Mise en page ---
     fig_year.update_layout(
         barmode="group",
-        xaxis=dict(title="Mois"),
         yaxis=dict(
             title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
             tickfont=dict(color="steelblue")
@@ -250,7 +243,7 @@ with tab_annuel:
         # Ces deux paramètres doivent être ici, au niveau du layout global 
         bargap=0.2,            # espace entre groupes de barres
         bargroupgap=0.05,      # espace entre barres d’un même groupe
-        template="plotly_white",
+        template="simple_white",
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -300,7 +293,6 @@ with tab_mois:
     fig.update_layout(
         barmode="group",
         title=dict(text="Consommation mensuelle et DJU", x=0.1),
-        xaxis=dict(title="Mois"),
         yaxis=dict(
             title=dict(text="Consommation (kWh)", font=dict(color="steelblue")),
             tickfont=dict(color="steelblue")
@@ -314,7 +306,7 @@ with tab_mois:
         # Ces deux paramètres doivent être ici, au niveau du layout global
         bargap=0.2,            # espace entre groupes de barres
         bargroupgap=0.05,      # espace entre barres d’un même groupe
-        template="plotly_white",
+        template="simple_white",
         legend=dict(
             orientation="h",
             yanchor="bottom",
