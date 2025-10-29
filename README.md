@@ -36,6 +36,9 @@ Outre l'historique de consommation horaire, l'application permet de visusaliser 
   <img src="images/elec_horaire_heatmap_profils.png" alt="global2" width="45%"/>
 </p>
 
+#### *consommations journalières
+
+
 
 #### *consommations mensuelles*
 
