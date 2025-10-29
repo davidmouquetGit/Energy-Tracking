@@ -12,8 +12,15 @@ L'application permet:
 - D'afficher des informations sur les données (distribution, données manquantes, périodes couvertes)
 
 ## Vue globale
-![Global](images/vue_global.png)
 
+<p align="center">
+  <img src="images/vue_global.png" alt="global1" width="60%"/>
+</p>
+
+
+<p align="center">
+  <img src="images/vue_global_conso_mensuelles.png" alt="global2" width="60%"/>
+</p>
 
 
 ## ⚙️ Technologie utilisées
