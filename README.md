@@ -14,8 +14,12 @@ L'application permet:
 ## Vue globale
 
 <p align="center">
-  <img src="images/vue_global.png" alt="global1" width="45%"/>
-  <img src="images/vue_global_conso_mensuelles.png" alt="global2" width="45%"/>
+  <img src="images/vue_global.png" alt="global1" width="60%"/>
+</p>
+
+
+<p align="center">
+  <img src="images/vue_global_conso_mensuelles.png" alt="global2" width="60%"/>
 </p>
 
 
