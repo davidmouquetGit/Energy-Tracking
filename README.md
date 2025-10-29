@@ -8,14 +8,12 @@ L'application permet:
 - De visualiser les consommations à la maille annuelle, mensuelle, journalière et horaire (uniquement pour l'électricité)
 - Comparer les consommations sur des périodes identiques
 - Comparer les consommations par rapport à un modèle basé sur la rigueur climatique et le taux d'occupation du logement
-- d'injecter les données journalère de consommation gaz (il n'y a pas d'accès à l'API GRFD pour les particuliers)
+- d'injecter les données journalière de consommation gaz (il n'y a pas d'accès à l'API GRFD pour les particuliers)
 - D'afficher des informations sur les données (distribution, données manquantes, périodes couvertes)
 
-## 📊 Sources utilisées
+## Vue globale
+![Global](images/vue_global.png)
 
-- API météo
-- API
-- Données client GRDF  
 
 
 ## ⚙️ Technologie utilisées
