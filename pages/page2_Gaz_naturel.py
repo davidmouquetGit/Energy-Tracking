@@ -105,7 +105,7 @@ with tabm:
         # Série 2 simple
         fig.add_trace(go.Bar(
             x=data_gaz_mois.index,
-            y=data_gaz_mois.values,
+            y=data_gaz_mois['energie'],
             name="Consommation mensuelle",
             marker_color="#b4801f"
         ))
@@ -143,7 +143,7 @@ with tabm:
     # Comparaison des consommations des mois identiques
     data_gaz_mois  = st.session_state["data_gaz_mois"]
     data_gaz_mois = data_gaz_mois[data_gaz_mois.index>="2023-01-01"]
-    data_gaz_mois = data_gaz_mois.to_frame()
+    #data_gaz_mois = data_gaz_mois.to_frame()
     data_gaz_mois['année'] = data_gaz_mois.index.year
     data_gaz_mois['mois']  = data_gaz_mois.index.month
     df_pivot = data_gaz_mois.pivot(index='mois', columns='année', values='energie')

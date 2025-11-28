@@ -31,6 +31,7 @@ data_gaz_mois = data_gaz_mois[data_gaz_mois.index>='2023-01-01']
 data_elec_year = data_elec_mois.resample('YS').sum()
 data_gaz_year  = data_gaz_mois.resample('YS').sum()
 
+
 mois_elec = data_elec_mois.index.strftime("%b %Y")
 mois_gaz  = data_gaz_mois.index.strftime("%b %Y")
 
@@ -162,7 +163,7 @@ with tab_annuel:
 
     fig_year.add_trace(go.Bar(
         x=year_elec,
-        y=data_elec_year,
+        y=data_elec_year.value,
         name="Electricité",
         marker_color="steelblue",
         yaxis="y1"
@@ -170,7 +171,7 @@ with tab_annuel:
 
     fig_year.add_trace(go.Bar(
         x=year_gaz,
-        y=data_gaz_year,
+        y=data_gaz_year.energie,
         name="Gaz",
         marker_color="darkorange",
         yaxis="y1"
@@ -264,7 +265,7 @@ with tab_mois:
 
     fig.add_trace(go.Bar(
         x=mois_elec,
-        y=data_elec_mois,
+        y=data_elec_mois.value,
         name="Electricité",
         marker_color="steelblue",
         yaxis="y1"
@@ -272,7 +273,7 @@ with tab_mois:
 
     fig.add_trace(go.Bar(
         x=mois_gaz,
-        y=data_gaz_mois,
+        y=data_gaz_mois.energie,
         name="Gaz",
         marker_color="darkorange",
         yaxis="y1"

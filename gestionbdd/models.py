@@ -70,3 +70,24 @@ class Occupation(Base):
         UniqueConstraint("horodatage", name="uq_occ_day_horodatage"),
     )
 
+
+class Facturation(Base):
+    __tablename__ = "facture_mois"
+
+    horodatage = Column(TIMESTAMP, primary_key=True, nullable=False)
+    gaz_abon_tcc   = Column(Float, nullable=False)
+    gaz_conso_tcc  = Column(Float, nullable=False)
+    gaz_taxes_tcc  = Column(Float, nullable=False)
+    elec_abon_tcc  = Column(Float, nullable=False)
+    elec_conso_tcc = Column(Float, nullable=False)
+    elec_taxes_tcc = Column(Float, nullable=False)
+    gaz_abon_ht   = Column(Float, nullable=False)
+    gaz_conso_ht  = Column(Float, nullable=False)
+    gaz_taxes_ht  = Column(Float, nullable=False)
+    elec_abon_ht  = Column(Float, nullable=False)
+    elec_conso_ht = Column(Float, nullable=False)
+    elec_taxes_ht = Column(Float, nullable=False)
+    __table_args__ = (
+        UniqueConstraint("horodatage", name="uq_fact_mois_horodatage"),
+    )
+

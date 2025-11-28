@@ -56,6 +56,29 @@ T_moyenne = (data_meteo_jour['temperature_2m_min'] + data_meteo_jour['temperatur
 data_meteo_jour = data_meteo_jour.assign(DJU=lambda x: (18.0 - T_moyenne).clip(lower=0))
 data_dju_mois = data_meteo_jour['DJU'].resample('MS').sum()
 
+# Calcul des facturations mensuelles de gaz naturel
+
+import pandas as pd
+
+# Lecture du fichier CSV
+couts = pd.read_csv("data/coutenergies.csv", sep=",")
+
+# Conversion de la colonne "Mois" en datetime (format JJ/MM/AAAA)
+couts["Mois"] = pd.to_datetime(couts["Mois"], format="%d/%m/%Y")
+couts.set_index("Mois", inplace=True)
+
+data_gaz_mois = pd.concat([data_gaz_mois,couts[['abonnement_gaz','prix_kwh_gaz_ht']]], axis=1)
+
+data_gaz_mois['abonnement_gaz_tcc'] = data_gaz_mois['abonnement_gaz'] * 1.055
+data_gaz_mois['conso_gaz_tcc'] = data_gaz_mois['energie'] * data_gaz_mois['prix_kwh_gaz_ht']*1.2
+data_gaz_mois['taxes_gaz_tcc'] = data_gaz_mois['energie'] * 0.01637  + 38/12*(1+0.055)
+
+data_elec_mois = pd.concat([data_elec_mois,couts[['abonnement_elec','prix_kwh_elec_hc_ht','prix_kwh_elec_hp_ht','ratio_conso_hp']]], axis=1)
+
+
+data_elec_mois['abonnement_elec_tcc'] = data_elec_mois['abonnement_elec'] * 1.055
+data_elec_mois['conso_elec_tcc']      = data_elec_mois['value'] * data_elec_mois['ratio_conso_hp'] * data_elec_mois['prix_kwh_elec_hp_ht']*1.2 + data_elec_mois['value'] * (1.0-data_elec_mois['ratio_conso_hp']) * data_elec_mois['prix_kwh_elec_hc_ht']*1.2
+data_elec_mois['taxes_elec_tcc']      = data_elec_mois['value'] * 0.0337 + 35.72/12*(1+0.055)
 
 
 st.session_state["data_elec_heure"] = data_elec_heure
