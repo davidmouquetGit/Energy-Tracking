@@ -1,5 +1,5 @@
 # Energy-Tracking 
-J'ai commencé à m'intéresser à mes consommations de gaz et d'électricité lorsque mon fournisseur m'indiquait: "vous consommez plus que les foyers de similaires..." 😒
+J'ai commencé à m'intéresser à mes consommations de gaz et d'électricité lorsque mon fournisseur m'indiquait: "vous consommez plus que les foyers de taille similaire..." 😒
 sans trop savoir comment mon fournisseur avait pu établir ses critères de similarité, j'ai développé cette application pour suivre, traiter et visualiser mes données de consommation de gaz et électricité.
 Les données sont récupérées quotidiennement via une API que j'ai conçue dans un autre projet.
 ![Architecture](images/architecture_application.png)
